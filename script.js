@@ -22,19 +22,30 @@ let animationDone = false;
 let shooterToggle = true;
 
 // 💌 Mensaje lateral
-const heartMessageText = "Gracias por ser mi compañera, mi amiga y mi amor. Eres la luz que ilumina mis días y la razón de mi felicidad. Te amo con todo mi corazón, hoy y siempre. Feliz San Valentín, mi amor. Loveu❤️";
+const heartMessageText = "Siempre juntos, Kams ❤️. Gracias por estar conmigo y por cada momento que compartimos. Eres lo más importante en mi vida y te amo con todo mi corazón.";
 let typedText = "";
 let typedIndex = 0;
 let typingInterval = null;
 
+// Detectar si es dispositivo móvil
+function isMobileDevice() {
+  return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+}
+
 function resizeCanvas() {
+  const isMobile = isMobileDevice();
+  
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  const scaleFactor = Math.min(1, canvas.width / 700);
-  fontSize = 90 * scaleFactor;
-  lineHeight = 110 * scaleFactor;
-  heartScale = 14 * scaleFactor;
+  // Ajustar parámetros según dispositivo
+  const scaleFactor = isMobile ? 
+    Math.min(1, canvas.width / 500) : // Factor diferente para móviles
+    Math.min(1, canvas.width / 700);
+    
+  fontSize = isMobile ? 70 * scaleFactor : 90 * scaleFactor;
+  lineHeight = isMobile ? 90 * scaleFactor : 110 * scaleFactor;
+  heartScale = isMobile ? 12 * scaleFactor : 14 * scaleFactor;
 
   gif1Pos.x = gif1.offsetLeft + gif1.offsetWidth / 2;
   gif1Pos.y = canvas.height - (gif1.offsetHeight / 2);
@@ -42,8 +53,11 @@ function resizeCanvas() {
   gif2Pos.x = gif2.offsetLeft + gif2.offsetWidth / 2;
   gif2Pos.y = canvas.height - (gif2.offsetHeight / 2);
 
+  // Ajustar número de estrellas según dispositivo
   stars.length = 0;
-  for (let i = 0; i < 200; i++) {
+  const starCount = isMobile ? 100 : 200;
+  
+  for (let i = 0; i < starCount; i++) {
     stars.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
@@ -186,6 +200,10 @@ function shootDot() {
                   typedText = "";
                   typedIndex = 0;
                   clearInterval(typingInterval);
+                  
+                  // Ajustar velocidad de escritura para móviles
+                  const typingSpeed = isMobileDevice() ? 90 : 70;
+                  
                   typingInterval = setInterval(() => {
                     if (typedIndex < heartMessageText.length) {
                         typedText += heartMessageText[typedIndex];
@@ -195,7 +213,7 @@ function shootDot() {
                         clearInterval(typingInterval);
                         heartMessage.innerHTML = typedText;
                     }
-                  }, 70);
+                  }, typingSpeed);
                 }, 1000);
             }
         }
@@ -286,12 +304,13 @@ function animate() {
   });
 }
 
+// Event listeners
 window.addEventListener('resize', resizeCanvas);
-
-window.onload = () => {
+window.addEventListener('load', () => {
   setTimeout(resizeCanvas, 100);
-};
+});
 
+// Iniciar animaciones
 animate();
 setInterval(shootDot, 20);
-setInterval(createShootingStar, 1500);  
+setInterval(createShootingStar, 1500);
