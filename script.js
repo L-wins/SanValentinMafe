@@ -22,7 +22,7 @@ let animationDone = false;
 let shooterToggle = true;
 
 // 💌 Mensaje lateral
-const heartMessageText = "Siempre juntos, Kams ❤️. Gracias por estar conmigo y por cada momento que compartimos. Eres lo más importante en mi vida y te amo con todo mi corazón.";
+const heartMessageText = "Gracias por ser mi compañera, mi amiga y mi amor. Eres la luz que ilumina mis días y la razón de mi felicidad. Te amo con todo mi corazón, hoy y siempre. Feliz San Valentín, mi amor. Loveu❤️";
 let typedText = "";
 let typedIndex = 0;
 let typingInterval = null;
